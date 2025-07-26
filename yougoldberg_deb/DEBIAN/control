@@ -1,0 +1,10 @@
+Package: yougoldberg
+Version: 1.0.0
+Section: utils
+Priority: optional
+Architecture: amd64
+Maintainer: Zidni Ridwan <your@email.com>
+Depends: libcurl4
+Description: yougoldberg - A OSINT Username Discovery Tool.
+ YouGoldberg is a fast and efficient C++ CLI tool for Open Source Intelligence (OSINT) 
+ that searches for usernames across 101+ popular platforms and services.

@@ -1,0 +1,27 @@
+.TH YOGOLDBERG 1 "2024" "YouGoldberg 1.0.0" "User Commands"
+.SH NAME
+yougoldberg \- OSINT Username Discovery Tool - Search usernames across 101+ platforms
+.SH SYNOPSIS
+.B yougoldberg
+[\fIOPTION\fR] \fIUSERNAME\fR
+.SH DESCRIPTION
+YouGoldberg is a fast and efficient C++ CLI tool for Open Source Intelligence (OSINT) that searches for usernames across 101+ popular platforms and services.
+.SH OPTIONS
+.TP
+.B \-v, \-\-verbose
+Enable verbose output
+.TP
+.B \-t, \-\-timeout \fISECONDS\fR
+Set timeout in seconds (default: 10)
+.TP
+.B \-h, \-\-help
+Display help information
+.SH EXAMPLES
+.TP
+.B yougoldberg johndoe
+Search for username "johndoe"
+.TP
+.B yougoldberg \-v \-t 15 techuser
+Verbose search with 15-second timeout
+.SH AUTHOR
+YouGoldberg development team
