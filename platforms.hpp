@@ -83,6 +83,27 @@ std::map<std::string, std::string> getPlatforms() {
         {"Furaffinity", "https://www.furaffinity.net/user/%s"},
         {"OpenSea", "https://opensea.io/%s"},
         {"NameMC", "https://namemc.com/profile/%s"},
-        {"Chess.com", "https://www.chess.com/member/%s"}
+        {"Chess.com", "https://www.chess.com/member/%s"},
+        {"Lemmy", "https://lemmy.world/u/%s"},
+        {"Misskey", "https://misskey.io/@%s"},
+        {"PeerTube", "https://%s.video"}, // platform-specific, dynamic
+        {"Mastodon", "https://mastodon.social/@%s"},
+        {"Lichess", "https://lichess.org/@/%s"},
+        {"Gogs", "https://try.gogs.io/%s"},
+        {"Ko-fi", "https://ko-fi.com/%s"},
+        {"BuyMeACoffee", "https://www.buymeacoffee.com/%s"},
+        {"Patreon", "https://www.patreon.com/%s"},
+        {"CashApp", "https://cash.app/%s"},
+        {"PayPal.Me", "https://www.paypal.me/%s"},
+        {"Producteev", "https://www.producteev.com/%s"},
+        {"Bitbucket", "https://bitbucket.org/%s"},
+        {"Launchpad", "https://launchpad.net/~%s"},
+        {"Myspace", "https://myspace.com/%s"},
+        {"OK.ru", "https://ok.ru/%s"},
+        {"VK", "https://vk.com/%s"},
+        {"Mixcloud", "https://www.mixcloud.com/%s"},
+        {"Bandcamp", "https://%s.bandcamp.com"},
+        {"Etsy", "https://www.etsy.com/shop/%s"},
+        {"Codeberg", "https://codeberg.org/%s"},
     };
 } 

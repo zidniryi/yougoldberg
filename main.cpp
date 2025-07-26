@@ -95,8 +95,9 @@ public:
             
             // Format URL with username
             std::string formattedUrl;
-            char* buffer = new char[platform.second.length() + username.length() + 1];
-            sprintf(buffer, platform.second.c_str(), username.c_str());
+            size_t bufferSize = platform.second.length() + username.length() + 1;
+            char* buffer = new char[bufferSize];
+            snprintf(buffer, bufferSize, platform.second.c_str(), username.c_str());
             formattedUrl = buffer;
             delete[] buffer;
             
