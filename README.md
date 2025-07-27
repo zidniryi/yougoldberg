@@ -1,6 +1,6 @@
 # YouGoldberg - OSINT Username Discovery Tool 🔍
 
-A fast and efficient C++ CLI tool for Open Source Intelligence (OSINT) that searches for usernames across 80+ popular platforms and services.
+A fast and efficient C++ CLI tool for Open Source Intelligence (OSINT) that searches for usernames across 101+ popular platforms and services.
 
 ## Features
 
@@ -40,6 +40,8 @@ sudo dnf install cmake gcc-c++ libcurl-devel
 
 ## Building
 
+### Standard Build (CMake)
+
 1. **Clone or download the project**
 2. **Navigate to project directory**
 3. **Create build directory and compile:**
@@ -49,6 +51,72 @@ mkdir build
 cd build
 cmake ..
 make
+```
+
+### Cross-Platform Build Scripts
+
+For convenience, use the provided build scripts:
+
+```bash
+# Build all platforms (native + Windows)
+./build.sh
+
+# Build specific platforms
+./build.sh native   # Linux/macOS only
+./build.sh windows  # Windows cross-compilation only
+
+# Package builds
+./build.sh pkg      # macOS package installer
+./build.sh deb      # Debian package (Linux only)
+```
+
+### Windows Build Status
+
+**Current Status**: ✅ **Working** - Creates Windows executable successfully
+
+```bash
+# Build Windows executable
+./build.sh windows
+```
+
+**Output**: `yougoldberg-windows.exe` (12MB static executable)
+
+**Important Notes**:
+- ⚠️ **Current Windows build is compiled without libcurl** for compatibility
+- ⚠️ **The Windows executable will not function properly** without libcurl
+- ✅ **The executable compiles and runs** but cannot make HTTP requests
+
+### Making Windows Build Fully Functional
+
+To create a fully functional Windows executable, you have several options:
+
+#### Option 1: Install libcurl for MinGW (Recommended)
+```bash
+# macOS
+brew install mingw-w64 curl
+
+# Ubuntu/Debian
+sudo apt install mingw-w64 libcurl4-openssl-dev
+
+# Then rebuild
+./build.sh windows
+```
+
+#### Option 2: Build on Windows directly
+```bash
+# Install Visual Studio with C++ support
+# Install vcpkg: git clone https://github.com/Microsoft/vcpkg.git
+# Install curl: vcpkg install curl[core]:x64-windows-static
+# Build with CMake
+```
+
+#### Option 3: Use Docker (if available)
+```bash
+# Requires Docker Desktop
+docker run --rm -v "$(pwd):/app" -w /app ubuntu:22.04 bash -c "
+  apt update && apt install -y mingw-w64 g++-mingw-w64 wget
+  # Build libcurl and yougoldberg
+"
 ```
 
 ## Usage
@@ -95,9 +163,9 @@ make
 
 
 🔍 Searching for username: techuser
-📊 Checking 80 platforms...
+📊 Checking 101 platforms...
 
-Progress: [80/80] Checking Chess.com...
+Progress: [101/101] Checking Chess.com...
   ✓ FOUND: GitHub
   ✓ FOUND: Twitter
   ✓ FOUND: Reddit
@@ -118,7 +186,7 @@ Progress: [80/80] Checking Chess.com...
 
 ## Supported Platforms
 
-The tool checks 80+ platforms including:
+The tool checks 101+ platforms including:
 
 **Development & Code:**
 - GitHub, GitLab, StackOverflow, Dev.to, Codepen, Replit

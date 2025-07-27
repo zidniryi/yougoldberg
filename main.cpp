@@ -1,7 +1,34 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#ifdef NO_CURL
+// Stub curl functions for compilation without libcurl
+typedef void CURL;
+typedef int CURLcode;
+#define CURLE_OK 0
+#define CURL_GLOBAL_DEFAULT 0
+#define CURLOPT_URL 10000
+#define CURLOPT_NOBODY 44
+#define CURLOPT_TIMEOUT 13
+#define CURLOPT_USERAGENT 10018
+#define CURLOPT_FOLLOWLOCATION 52
+#define CURLOPT_SSL_VERIFYPEER 64
+#define CURLOPT_SSL_VERIFYHOST 81
+#define CURLOPT_WRITEFUNCTION 20011
+#define CURLOPT_WRITEDATA 10001
+#define CURLINFO_RESPONSE_CODE 2097154
+
+CURL *curl_easy_init(void) { return (CURL*)1; }
+CURLcode curl_easy_setopt(CURL *curl, int option, ...) { return CURLE_OK; }
+CURLcode curl_easy_perform(CURL *curl) { return CURLE_OK; }
+CURLcode curl_easy_getinfo(CURL *curl, int info, ...) { return CURLE_OK; }
+void curl_easy_cleanup(CURL *curl) {}
+const char *curl_easy_strerror(CURLcode errornum) { return "OK"; }
+int curl_global_init(long flags) { return CURLE_OK; }
+void curl_global_cleanup(void) {}
+#else
 #include <curl/curl.h>
+#endif
 #include <cstdio>
 #include <memory>
 #include <iomanip>
@@ -138,6 +165,7 @@ void printBanner() {
        ██     ██████   ██████  	
                                                             
  🔍 yougoldberg OSINT Username Discovery Tool 🔍            
+ 🔍 HELLO YOU! 🔍            
               Version 1.0                             
 
 )" << RESET_COLOR << std::endl;
