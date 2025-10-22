@@ -168,7 +168,7 @@ void printBanner() {
                                                             
  🔍 yougoldberg OSINT Username Discovery Tool 🔍            
  🔍 HELLO YOU! 🔍            
-              Version 1.0                             
+              Version 1.1                             
 
 )" << RESET_COLOR << std::endl;
 }
