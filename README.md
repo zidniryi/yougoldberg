@@ -7,6 +7,7 @@ A fast and efficient C++ CLI tool for Open Source Intelligence (OSINT) that sear
 - 🚀 **Fast Multi-Platform Search**: Check username availability across 101+ platforms
 - 🎯 **HTTP Status Verification**: Uses HEAD requests for efficient checking
 - 🎨 **Beautiful CLI Interface**: Colored output with progress indicators
+- 📄 **Export Results**: Save findings to JSON or TXT files
 - ⚙️ **Configurable**: Adjustable timeout and verbose mode
 - 🔒 **Responsible**: Built with rate limiting to respect server resources
 
@@ -14,22 +15,28 @@ A fast and efficient C++ CLI tool for Open Source Intelligence (OSINT) that sear
 
 Ready-to-use executables are available for all major platforms:
 
-### Latest Release: [v1.0](https://github.com/zidniryi/yougoldberg/releases/tag/v1.0)
+### Latest Release: [v1.1](https://github.com/zidniryi/yougoldberg/releases/tag/v1.1)
 
 | Platform | Download | Size | Notes |
 |----------|----------|------|-------|
-| **Windows** | [yougoldberg-windows.exe](https://github.com/zidniryi/yougoldberg/releases/download/v1.0/yougoldberg-windows.exe) | 12MB | ⚠️ Requires libcurl for full functionality |
-| **Linux** | [yougoldberg-native](https://github.com/zidniryi/yougoldberg/releases/download/v1.0/yougoldberg-native) | 68KB | Static binary for x86_64 |
-| **macOS** | [yougoldberg-installer.pkg](https://github.com/zidniryi/yougoldberg/releases/download/v1.0/yougoldberg-installer.pkg) | 24KB | Package installer |
-| **Universal** | [Source Code (ZIP)](https://github.com/zidniryi/yougoldberg/archive/refs/tags/v1.0.zip) | - | Build from source |
+| **Windows** | [yougoldberg-windows.exe](https://github.com/zidniryi/yougoldberg/releases/download/v1.1/yougoldberg-windows.exe) | 12MB | ⚠️ Requires libcurl for full functionality |
+| **Linux** | [yougoldberg-native](https://github.com/zidniryi/yougoldberg/releases/download/v1.1/yougoldberg-native) | 68KB | Static binary for x86_64 |
+| **macOS** | [yougoldberg-installer.pkg](https://github.com/zidniryi/yougoldberg/releases/download/v1.1/yougoldberg-installer.pkg) | 24KB | Package installer |
+| **Universal** | [Source Code (ZIP)](https://github.com/zidniryi/yougoldberg/archive/refs/tags/v1.1.zip) | - | Build from source |
 
 ### Quick Start
 
 ```bash
 # Download and run (Linux/macOS)
-wget https://github.com/zidniryi/yougoldberg/releases/download/v1.0/yougoldberg-native
+wget https://github.com/zidniryi/yougoldberg/releases/download/v1.1/yougoldberg-native
 chmod +x yougoldberg-native
 ./yougoldberg-native johndoe
+
+# Export results to JSON
+./yougoldberg-native -j johndoe
+
+# Export results to TXT file
+./yougoldberg-native -o results.txt johndoe
 
 # Windows (download and run)
 # Download yougoldberg-windows.exe and run in Command Prompt
@@ -158,6 +165,8 @@ docker run --rm -v "$(pwd):/app" -w /app ubuntu:22.04 bash -c "
 ### Options
 - `-v, --verbose` - Enable verbose output showing all checked URLs
 - `-t, --timeout` - Set timeout in seconds (default: 10)
+- `-j, --json` - Export results to JSON file
+- `-o, --output` - Export results to TXT file
 - `-h, --help` - Show help message
 
 ### Examples
@@ -170,6 +179,22 @@ docker run --rm -v "$(pwd):/app" -w /app ubuntu:22.04 bash -c "
 **Verbose mode with custom timeout:**
 ```bash
 ./yougoldberg -v -t 15 techuser
+```
+
+**Export to JSON:**
+```bash
+./yougoldberg -j johndoe
+# Creates: johndoe_results.json
+```
+
+**Export to TXT file:**
+```bash
+./yougoldberg -o results.txt johndoe
+```
+
+**Combine options:**
+```bash
+./yougoldberg -v -j -t 20 johndoe
 ```
 
 **Get help:**
