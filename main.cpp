@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <fstream>
+#include <sstream>
 #ifdef NO_CURL
 // Stub curl functions for compilation without libcurl
 typedef void CURL;
@@ -176,10 +178,14 @@ void printUsage(const char* programName) {
     std::cout << "\nOptions:\n";
     std::cout << "  -v, --verbose    Enable verbose output\n";
     std::cout << "  -t, --timeout    Set timeout in seconds (default: 10)\n";
+    std::cout << "  -j, --json       Export results to JSON file\n";
+    std::cout << "  -o, --output     Export results to TXT file\n";
     std::cout << "  -h, --help       Show this help message\n";
     std::cout << "\nExample:\n";
     std::cout << "  " << programName << " johndoe\n";
-    std::cout << "  " << programName << " -v -t 15 johndoe\n" << std::endl;
+    std::cout << "  " << programName << " -v -t 15 johndoe\n";
+    std::cout << "  " << programName << " -j johndoe\n";
+    std::cout << "  " << programName << " -o results.txt johndoe\n" << std::endl;
 }
 
 void printResults(const std::vector<FoundProfile>& profiles) {
@@ -207,10 +213,77 @@ void printResults(const std::vector<FoundProfile>& profiles) {
     std::cout << "└─────────────────────────┴────────────────────────────────────────────────────────┘\n" << std::endl;
 }
 
+void exportToJSON(const std::vector<FoundProfile>& profiles, const std::string& username) {
+    std::string filename = username + "_results.json";
+    std::ofstream file(filename);
+    
+    if (!file.is_open()) {
+        std::cerr << RED_COLOR << "Error: Could not create JSON file " << filename << RESET_COLOR << std::endl;
+        return;
+    }
+    
+    file << "{\n";
+    file << "  \"username\": \"" << username << "\",\n";
+    file << "  \"search_date\": \"" << std::chrono::system_clock::now().time_since_epoch().count() << "\",\n";
+    file << "  \"total_found\": " << profiles.size() << ",\n";
+    file << "  \"profiles\": [\n";
+    
+    for (size_t i = 0; i < profiles.size(); i++) {
+        file << "    {\n";
+        file << "      \"platform\": \"" << profiles[i].platform << "\",\n";
+        file << "      \"url\": \"" << profiles[i].url << "\",\n";
+        file << "      \"response_code\": " << profiles[i].responseCode << "\n";
+        file << "    }";
+        if (i < profiles.size() - 1) file << ",";
+        file << "\n";
+    }
+    
+    file << "  ]\n";
+    file << "}\n";
+    file.close();
+    
+    std::cout << GREEN_COLOR << "📄 Results exported to: " << filename << RESET_COLOR << std::endl;
+}
+
+void exportToTXT(const std::vector<FoundProfile>& profiles, const std::string& username, const std::string& outputFile) {
+    std::ofstream file(outputFile);
+    
+    if (!file.is_open()) {
+        std::cerr << RED_COLOR << "Error: Could not create TXT file " << outputFile << RESET_COLOR << std::endl;
+        return;
+    }
+    
+    file << "YouGoldberg OSINT Results\n";
+    file << "========================\n\n";
+    file << "Username: " << username << "\n";
+    file << "Search Date: " << std::chrono::system_clock::now().time_since_epoch().count() << "\n";
+    file << "Total Profiles Found: " << profiles.size() << "\n\n";
+    
+    if (profiles.empty()) {
+        file << "No profiles found for this username.\n";
+    } else {
+        file << "Found Profiles:\n";
+        file << "---------------\n\n";
+        
+        for (const auto& profile : profiles) {
+            file << "Platform: " << profile.platform << "\n";
+            file << "URL: " << profile.url << "\n";
+            file << "Response Code: " << profile.responseCode << "\n";
+            file << "---\n\n";
+        }
+    }
+    
+    file.close();
+    
+    std::cout << GREEN_COLOR << "📄 Results exported to: " << outputFile << RESET_COLOR << std::endl;
+}
+
 int main(int argc, char* argv[]) {
     bool verbose = false;
     int timeout = 10;
     std::string username;
+    bool exportJSON = false;
+    std::string outputFile = "";
     
     // Parse command line arguments
     for (int i = 1; i < argc; i++) {
@@ -231,6 +304,15 @@ int main(int argc, char* argv[]) {
                 }
             } else {
                 std::cerr << RED_COLOR << "Error: --timeout requires a value" << RESET_COLOR << std::endl;
+                return 1;
+            }
+        } else if (arg == "-j" || arg == "--json") {
+            exportJSON = true;
+        } else if (arg == "-o" || arg == "--output") {
+            if (i + 1 < argc) {
+                outputFile = argv[++i];
+            } else {
+                std::cerr << RED_COLOR << "Error: --output requires a filename" << RESET_COLOR << std::endl;
                 return 1;
             }
         } else if (arg[0] != '-') {
@@ -271,6 +353,15 @@ int main(int argc, char* argv[]) {
     
     // Print results
     printResults(foundProfiles);
+    
+    // Export results if requested
+    if (exportJSON) {
+        exportToJSON(foundProfiles, username);
+    }
+    
+    if (!outputFile.empty()) {
+        exportToTXT(foundProfiles, username, outputFile);
+    }
     
     std::cout << BLUE_COLOR << "⏱️  Search completed in " << duration.count() << " seconds" << RESET_COLOR << std::endl;
     std::cout << YELLOW_COLOR << "⚠️  Remember: This tool is for educational and legitimate research purposes only!" << RESET_COLOR << std::endl;
